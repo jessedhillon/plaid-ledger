@@ -1,0 +1,5 @@
+click==6.7
+plaid-python==2.0.2
+PyYAML==3.11
+colorlog==2.10.0
+pygments==2.2.0
