@@ -17,4 +17,6 @@ setup(
     ],
     entry_points={
         'console_scripts': ['pledger=plaid_ledger.commands:main']
-    })
+    },
+    test_suite='nose.collector',
+    tests_require=['nose'])

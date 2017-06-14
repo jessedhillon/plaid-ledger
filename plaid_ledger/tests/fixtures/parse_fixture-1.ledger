@@ -1,0 +1,20 @@
+2017-06-07 Allstate
+    ; Transaction-Id: Lowg3NgAvnTKxR6QkyPAcVBDvYwrQ3fxyDdOJ
+    Assets:Checking                                         $-17.42
+    Expenses:Household:Insurance                            $ 17.42
+
+2017-06-07 Amazon
+    ; Transaction-Id: QvBVAr1MPbS6QXMzDazMuEaqxDbKBJiywPENQ
+    Liabilities:Virgin America Signature Visa                $-9.99
+    Expenses:Amazon                                          $ 9.99
+
+2017-06-07 INSTACART
+    ; Transaction-Id: 4AOLpogxjvUj4kygyERoFXMybQjDy8hRVELRY
+    Liabilities:Chase Sapphire Visa                        $-131.69
+    Expenses:Food:Groceries                                $ 131.69
+
+2017-06-07 Paper Payment to Martin Lazaro
+    ; Transaction-Id: wyDz0bzX35CvKLk3dbeEcJVmjVj0o7f3kqy0X
+    Liabilities:Outflows                                   $-140.00
+    Expenses:Properties:1037 Stanford ave:Landscaping      $ 70.00
+    Expenses:Properties:817 53rd st:Landscaping
