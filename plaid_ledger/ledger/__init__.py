@@ -1,11 +1,12 @@
 import glob
 import logging
 import math
-import operator
 import re as regex
-from datetime import datetime
+from collections import namedtuple
 
 from plaid_ledger import config, predicate
+
+from . import parser
 
 
 def parse(s):
@@ -15,35 +16,31 @@ def parse(s):
         if not line.strip() and t:
             ledger[t['id']] = t
             t = {}
-        elif line[0].isdigit():
-            date, description = line.split(None, 1)
-            t['date'] = datetime.strptime(date, '%Y-%m-%d')
-            t['description'] = description.strip()
-        elif line.strip()[0] == ';':
-            comment = line.split(';', 1)[1].strip()
-            k, v = [s.strip() for s in comment.split(':', 1)]
-            t.setdefault('meta', {})
-            if k == 'Transaction-Id':
-                t['id'] = v
-            t['meta'][k] = v
+
+        elif parser.is_headline(line):
+            t.update(parser.parse_headline(line))
+
+        elif parser.is_comment(line):
+            m = parser.parse_comment(line)
+            comment = m['comment']
+
+            if parser.is_meta(comment):
+                m = parser.parse_meta(comment)
+                k, v = m['key'], m['value']
+
+                t.setdefault('meta', {})
+                t['meta'][k] = v
+
+                if k == 'Transaction-Id':
+                    t['id'] = v
+
         else:
-            line = line.strip()
-            if '$' in line:
-                a = regex.match(r'(.*)\s+\$([ -][0-9,\.]+)$', line)
-                account = {
-                    'account': a.groups()[0].strip(),
-                    'amount': float(a.groups()[1].strip().replace(',', ''))
-                }
-            else:
-                account = {
-                    'account': line,
-                    'amount': None
-                }
+            posting = parser.parse_posting(line)
 
             if 'target' not in t:
-                t['target'] = account
+                t['target'] = posting
             else:
-                t.setdefault('sources', []).append(account)
+                t.setdefault('sources', []).append(posting)
 
     return ledger
 
