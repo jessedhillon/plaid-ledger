@@ -79,7 +79,10 @@ def merge_transactions(ledger, store):
                     config.logger.debug("txn {transaction_id}: excluded transaction".\
                             format(**txn))
                     exclude = True
-                    break
+                elif f['action'] == 'include':
+                    config.logger.debug("txn {transaction_id}: included transaction".\
+                            format(**txn))
+                    exclude = False
 
         if exclude:
             continue
