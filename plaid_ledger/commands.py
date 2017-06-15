@@ -24,7 +24,8 @@ def dump():
 
 @fetch.command(name='transactions')
 @click.argument('item_ids', required=False, nargs=-1)
-def fetch_transactions(item_ids):
+@click.option('--full', '-F', is_flag=True)
+def fetch_transactions(item_ids, full):
     ts = transactions.load()
     new = 0
 
@@ -37,7 +38,7 @@ def fetch_transactions(item_ids):
             config.logger.debug("{id} ({name}): disabled, skipping".format(**item))
             continue
 
-        fetched = transactions.fetch(item)
+        fetched = transactions.fetch(item, full_history=full)
         config.logger.debug("{id} ({name}): fetched {} transactions)".format(len(fetched), **item))
 
         count = len(ts.keys())

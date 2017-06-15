@@ -47,7 +47,7 @@ def merge(store, transactions):
     return store
 
 
-def fetch(item):
+def fetch(item, full_history=False):
     access_token = item['access_token']
     name = item['name']
     transactions = []
@@ -64,13 +64,15 @@ def fetch(item):
             end_date=end_date)
 
         transactions.extend(response['transactions'])
-        while len(transactions) < response['total_transactions']:
-            response = config.client.Transactions.get(
-                access_token,
-                start_date=start_date,
-                end_date=end_date,
-                offset=len(transactions))
-            transactions.extend(response['transactions'])
+
+        if full_history:
+            while len(transactions) < response['total_transactions']:
+                response = config.client.Transactions.get(
+                    access_token,
+                    start_date=start_date,
+                    end_date=end_date,
+                    offset=len(transactions))
+                transactions.extend(response['transactions'])
 
     except ItemError as exc:
         config.logger.error("{id} ({name}): {}".format(exc, **item))
