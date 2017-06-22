@@ -69,6 +69,7 @@ def merge_transactions(ledger, store):
                 'item_id': f.get('item_id'),
                 'account_id': f.get('account_id'),
                 'transaction_type': f.get('transaction_type'),
+                'amount': f.get('amount'),
                 'name': f.get('name')
             }
             if predicate.match_transaction(txn, **p):
