@@ -51,7 +51,7 @@ def fetch_transactions(item_ids, full):
         if count > 0:
             config.logger.info("{id} ({name}): {} new transaction(s)".format(count, **item))
 
-    if new > 0:
+    if new > 0 or full:
         transactions.store(ts)
 
 
