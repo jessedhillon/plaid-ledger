@@ -151,6 +151,48 @@ def store(ledger):
             f.write('\n')
 
 
+def format(ledger):
+    items = sorted(ledger.values(), key=lambda t: (t['date'], t['description'], t['id']))
+
+    items = {}
+    for entry in items:
+        le = format_entry(entry)
+
+        quarter = math.floor(entry['date'].month / 4)
+        qk = "{:%Y}q{}".format(entry['date'], quarter + 1)
+        items.setdefault(qk, []).append(le)
+
+    return items
+
+
+def format_entry(entry, indent=4):
+    indent = " " * indent
+
+    l = []
+    l.append("{date:%Y-%m-%d} {description}".format(**entry))
+
+    keys = list(t['meta'].keys())
+    keys.remove('Transaction-Id')
+    for k in ['Transaction-Id'] + keys:
+        v = t['meta'][k]
+        l.append("{}; {}: {}".format(indent, k, v))
+
+    for a in [entry['target']] + t['sources']:
+        posting = "{}{:50}".format(indent, a['account'][:50])
+        if a['amount'] is not None:
+            amount = format_amount(a['amount'])
+            posting += "  {: >12}".format(amount)
+
+        entry.append(posting)
+
+    return '\n'.join(l)
+
+
+def format_amount(amount):
+    sign = '-' if amount <= 0 else ' '
+    return "${}{:,.2f}".format(sign, math.abs(amount))
+
+
 def get_target(transaction):
     account = config.get_account(transaction['account_id'])
     amount = transaction['amount']
