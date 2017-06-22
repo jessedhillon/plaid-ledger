@@ -78,19 +78,13 @@ def update():
     """
     Merge transactions into the ledger
     """
-    try:
-        ts = transactions.load()
-        l = ledger.load()
+    ts = transactions.load()
+    l = ledger.load()
 
-        count = len(l)
-        ledger.merge_transactions(l, ts)
-        count = len(l) - count
+    count = len(l)
+    ledger.merge_transactions(l, ts)
+    count = len(l) - count
 
-        if count > 0:
-            config.logger.info("merging {} new transactions".format(count))
-            ledger.store(l)
-    except:
-        import traceback
-        import pdb
-        traceback.print_exc()
-        pdb.post_mortem()
+    if count > 0:
+        config.logger.info("merging {} new transactions".format(count))
+        ledger.store(l)

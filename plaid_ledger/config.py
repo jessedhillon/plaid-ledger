@@ -50,7 +50,7 @@ def get_item(item_id):
 
 def get_account(account_id):
     if account_id not in accounts:
-        config.logger.warn("unknown account {}".format(account_id))
+        logger.warn("unknown account {}".format(account_id))
     return accounts[account_id]
 
 
@@ -89,3 +89,5 @@ def configure_logging(verbose):
         'handlers': handlers,
         'loggers': loggers,
     })
+
+    logger.debug("logging initialized")

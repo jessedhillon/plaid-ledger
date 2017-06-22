@@ -34,7 +34,7 @@ def store(store):
         fn = "transactions-{}.json".format(qk)
         with open(fn, 'w') as f:
             config.logger.debug("{}: storing {} transactions".format(fn, len(s)))
-            f.write(json.dumps(s, sort_keys=True))
+            f.write(json.dumps(s, sort_keys=True, indent=2))
 
     return transactions_by_quarter
 
